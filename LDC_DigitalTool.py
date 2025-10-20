@@ -18,54 +18,6 @@ if 'df_valid' not in st.session_state:
 if 'is_validated' not in st.session_state:
     st.session_state.is_validated = False
 
-# === INICIO DE LA SOLUCIÓN PARA EL CAMBIO DE TEMA ===
-# =========================================================================
-
-# 1. Inicializar el tema en el estado de sesión si no existe
-# Se intenta obtener el tema base actual (Streamlit lo usa internamente)
-try:
-    current_theme = st._config.get_option('theme.base')
-except:
-    # Si la lectura falla (o la propiedad aún no se ha inicializado), asumimos 'light' por defecto.
-    current_theme = 'light' 
-
-if 'current_theme' not in st.session_state:
-    st.session_state.current_theme = current_theme
-
-
-# 2. Función para cambiar el tema y forzar la actualización
-def switch_theme():
-    # Determinar el siguiente tema
-    if st.session_state.current_theme == 'dark':
-        next_theme = 'light'
-    else:
-        next_theme = 'dark'
-
-    # Cambiar la configuración interna del tema base de Streamlit (el workaround)
-    st._config.set_option('theme.base', next_theme)
-
-    # Actualizar el estado de sesión y forzar el re-ejecución
-    st.session_state.current_theme = next_theme
-    st.rerun()
-
-
-# 3. Colocar el botón de cambio de tema en la barra lateral
-with st.sidebar:
-    
-    st.markdown("---")
-    
-    if st.session_state.current_theme == 'dark':
-        theme_icon = "☀️"
-        theme_label = "Modo Claro"
-    else:
-        theme_icon = "🌙"
-        theme_label = "Modo Oscuro"
-
-    if st.button(f"{theme_icon} Cambiar a {theme_label}", key="theme_switcher_button", use_container_width=True):
-        switch_theme()
-        
-    st.markdown("---")
-
 # --- ESPECIFICACIONES DE VALIDACIÓN ---
 COLUMNS_SPECS = {
     'Año': {'dtype': np.int64, 'min': 2000, 'max': 2035},
@@ -1339,6 +1291,7 @@ with tab3:
                 
     else:
         st.warning("Por favor, **carga un archivo en la Pestaña de Carga** y asegúrate de que **la validación sea exitosa** para poder ver y configurar el procesamiento.")
+
 
 
 
