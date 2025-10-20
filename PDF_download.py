@@ -2,10 +2,14 @@ import pandas as pd
 import numpy as np
 import re # Para validación de expresiones regulares (Hora)
 import plotly.express as px
+import plotly.io as pio
 import io
 from datetime import datetime # Importar datetime para validación lógica temporal
 from fpdf import FPDF # Importar fpdf2 (¡Asegúrate de instalarlo!)
 
+pio.orca.config.use_kaleido = True
+# pio.config.default_engine = 'kaleido' 
+# pio.renderers.default = "kaleido"
 
 # Definición para generar Reporte PDF COMPLETO
 VERSION = "1.0.1" 
@@ -32,7 +36,7 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
             
             # Convertir Plotly figure a static PNG bytes (alta resolución)
             # Usar un tamaño fijo para consistencia en el PDF
-            png_bytes = fig.to_image(format="png", width=600, height=400) 
+            png_bytes = fig.to_image(format="png", width=600, height=400, engine="kaleido") 
             
             # Embed the image, 'w' especifica el ancho en mm
             pdf.image(name=io.BytesIO(png_bytes), type='PNG', w=width) 
@@ -142,6 +146,7 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
 
     # El resultado es el binario (bytes). Lo convertimos a 'bytes' inmutable para Streamlit.
     return bytes(pdf.output(dest='S')) 
+
 
 
 
