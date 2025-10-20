@@ -4,8 +4,7 @@ numpy
 matplotlib
 seaborn
 plotly
-fpdf
 openpyxl
 xlsxwriter
 fpdf2
-kaleido
+kaleido == 0.2.1
