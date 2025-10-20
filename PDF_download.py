@@ -23,32 +23,44 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
     # Función auxiliar para añadir figuras de Plotly como imágenes PNG
     # --------------------------------------------------------------------------------
     def add_plotly_figure(pdf, fig, title, width=170, height_mm=90):
+        # Función auxiliar para añadir figuras de Plotly como imágenes PNG
         try:
+            if fig is None:
+                raise ValueError("La figura de Plotly no fue generada (es None).")    
             # Comprobar si hay espacio suficiente en la página actual
             if pdf.get_y() + height_mm + 15 > pdf.h - 10: 
-                 pdf.add_page()
-            
-            # Título de la sección de gráfico
-            pdf.set_font("helvetica", size=12, style='B')
+                pdf.add_page()
+        
+            # Título de la sección de gráfico (Usar helvetica para evitar problemas de fuente)
+            # Asegúrate de haber reemplazado "Arial" por "helvetica" en TODOS los set_font
+            pdf.set_font("helvetica", size=12, style='B') 
             pdf.cell(0, 7, txt=title, ln=1, align="L")
-            
-            # Convertir Plotly figure a static PNG bytes (alta resolución)
-            # Usar un tamaño fijo para consistencia en el PDF
-            png_bytes = fig.to_image(format="png", width=600, height=400, engine="kaleido") 
-            
-            # Embed the image, 'w' especifica el ancho en mm
+        
+            # --- LÍNEA CLAVE DE CONVERSIÓN CON PIO.TO_IMAGE ---
+            # Este método es a menudo más estable en entornos de servidor que fig.to_image()
+            # Se fuerza el uso de kaleido.
+            png_bytes = pio.to_image(
+                fig,
+                format="png", 
+                width=700, 
+                height=400,
+                engine="kaleido" 
+            ) 
+        
+            if not png_bytes or len(png_bytes) < 100: # Una imagen válida tiene cientos/miles de bytes
+                raise RuntimeError("La conversión a PNG resultó en bytes de imagen vacíos o inválidos.")
+
+            # Embed the image
             pdf.image(name=io.BytesIO(png_bytes), type='PNG', w=width) 
             pdf.ln(5)
-            
-        except ImportError:
-            # Si kaleido no está instalado
-            pdf.set_font("helvetica", size=10, style='I')
-            pdf.cell(0, 7, txt="[Error: No se pudo generar el gráfico. Instalar 'kaleido'.]", ln=1, align="L")
-            pdf.ln(5)
-        except Exception as e:
-            pdf.set_font("helvetica", size=10, style='I')
-            pdf.cell(0, 7, txt=f"[Error al generar gráfico: {str(e)[:50]}...]", ln=1, align="L")
-            pdf.ln(5)
+        
+    except Exception as e:
+        # Imprime un mensaje de error explícito en el PDF
+        pdf.set_font("helvetica", size=10, style='I')
+        pdf.cell(0, 7, txt=f"[❌ ERROR AL GENERAR GRÁFICO: {title}]", ln=1, align="L")
+        pdf.cell(0, 7, txt=f"Tipo de Error: {type(e).__name__}", ln=1, align="L")
+        pdf.cell(0, 7, txt=f"Detalle: {str(e)[:150]}", ln=1, align="L")
+        pdf.ln(5)
 
     # --------------------------------------------------------------------------------
     # 1. PORTADA Y METADATOS
@@ -144,6 +156,7 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
 
     # El resultado es el binario (bytes). Lo convertimos a 'bytes' inmutable para Streamlit.
     return bytes(pdf.output(dest='S')) 
+
 
 
 
