@@ -141,4 +141,5 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
     add_plotly_figure(pdf, figures['fig_heat'], f"3.5. Mapa de Calor de Potencia Promedio (Agrupación: {tipo_mapa})", width=180, height_mm=130)
 
     # El resultado es el binario (bytes). Lo convertimos a 'bytes' inmutable para Streamlit.
-    return bytes(pdf.output(dest='S')) 
+    return bytes(pdf.output(dest='S', encoding='latin-1')) 
+
