@@ -8,8 +8,8 @@ from datetime import datetime # Importar datetime para validación lógica tempo
 from fpdf import FPDF # Importar fpdf2 (¡Asegúrate de instalarlo!)
 
 pio.orca.config.use_kaleido = True
-# pio.config.default_engine = 'kaleido' 
-# pio.renderers.default = "kaleido"
+pio.config.default_engine = 'kaleido' 
+pio.renderers.default = "kaleido"
 
 # Definición para generar Reporte PDF COMPLETO
 VERSION = "1.0.1" 
@@ -146,6 +146,7 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
 
     # El resultado es el binario (bytes). Lo convertimos a 'bytes' inmutable para Streamlit.
     return bytes(pdf.output(dest='S')) 
+
 
 
 
