@@ -969,7 +969,7 @@ with tab2:
                             "Energia Diaria (kWh)": "Energía Diaria (kWh)",
                             "Mes_Nombre": "Mes"
                             },
-                            template="plotly_white",
+                            #template="plotly_white",
                         )
 
                     else: # Diagrama de Barras
@@ -1291,4 +1291,5 @@ with tab3:
                 
     else:
         st.warning("Por favor, **carga un archivo en la Pestaña de Carga** y asegúrate de que **la validación sea exitosa** para poder ver y configurar el procesamiento.")
+
 
