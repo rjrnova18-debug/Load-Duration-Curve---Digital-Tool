@@ -962,14 +962,14 @@ with tab2:
                             y='Energia Diaria (kWh)',
                             color='Mes_Nombre', # Colorear por mes para la comparación
                             title='⚡️ Energía Diaria Total (kWh) por Día y Mes (Comparación por Mes)',
-                            markers=True
+                            markers=True,
                             #color_discrete_sequence=px.colors.sequential.Sunset,
                             labels={
                             "Fecha_Eje": "Día/Mes/Año",
                             "Energia Diaria (kWh)": "Energía Diaria (kWh)",
                             "Mes_Nombre": "Mes"
                             },
-                            #template="plotly_white",
+                            template="plotly_white"
                         )
 
                     else: # Diagrama de Barras
@@ -1291,5 +1291,6 @@ with tab3:
                 
     else:
         st.warning("Por favor, **carga un archivo en la Pestaña de Carga** y asegúrate de que **la validación sea exitosa** para poder ver y configurar el procesamiento.")
+
 
 
