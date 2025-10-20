@@ -27,7 +27,7 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
                  pdf.add_page()
             
             # Título de la sección de gráfico
-            pdf.set_font("Arial", size=12, style='B')
+            pdf.set_font("helvetica", size=12, style='B')
             pdf.cell(0, 7, txt=title, ln=1, align="L")
             
             # Convertir Plotly figure a static PNG bytes (alta resolución)
@@ -40,11 +40,11 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
             
         except ImportError:
             # Si kaleido no está instalado
-            pdf.set_font("Arial", size=10, style='I')
+            pdf.set_font("helvetica", size=10, style='I')
             pdf.cell(0, 7, txt="[Error: No se pudo generar el gráfico. Instalar 'kaleido'.]", ln=1, align="L")
             pdf.ln(5)
         except Exception as e:
-            pdf.set_font("Arial", size=10, style='I')
+            pdf.set_font("helvetica", size=10, style='I')
             pdf.cell(0, 7, txt=f"[Error al generar gráfico: {str(e)[:50]}...]", ln=1, align="L")
             pdf.ln(5)
 
@@ -52,38 +52,38 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
     # 1. PORTADA Y METADATOS
     # --------------------------------------------------------------------------------
     pdf.add_page()
-    pdf.set_font("Arial", size=18, style='B')
+    pdf.set_font("helvetica", size=18, style='B')
     pdf.cell(0, 20, txt="REPORTE COMPLETO DE ANÁLISIS DE CARGA LDC", ln=1, align="C")
     
-    pdf.set_font("Arial", size=12)
+    pdf.set_font("helvetica", size=12)
     pdf.ln(10)
     pdf.cell(0, 7, txt="Generado por: Analizador de Carga LDC", ln=1, align="C")
     pdf.ln(5)
 
-    pdf.set_font("Arial", size=10)
+    pdf.set_font("helvetica", size=10)
     pdf.cell(0, 7, txt=f"Fecha de Generación: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", ln=1, align="C")
     pdf.cell(0, 7, txt=f"Versión del Sistema: {version}", ln=1, align="C")
     pdf.cell(0, 7, txt=f"Período de Análisis: {df_resumen.iloc[0]['Ocurrencia'].split(' ')[0]} - {df_resumen.iloc[-1]['Ocurrencia'].split(' ')[0]} (Estimado)", ln=1, align="C")
 
     pdf.ln(20)
-    pdf.set_font("Arial", size=14, style='B')
+    pdf.set_font("helvetica", size=14, style='B')
     pdf.cell(0, 10, txt="Configuración del Análisis", ln=1, align="L")
-    pdf.set_font("Arial", size=10)
+    pdf.set_font("helvetica", size=10)
     pdf.cell(0, 5, txt=f"- Segmento Diurno: {hora_inicio_dia:02d}:00 a {hora_fin_dia:02d}:00", ln=1, align="L")
     pdf.cell(0, 5, txt=f"- Tipo de Curva de Energía Reportado: {tipo_curva}", ln=1, align="L")
     pdf.cell(0, 5, txt=f"- Base del Mapa de Calor: {tipo_mapa}", ln=1, align="L")
 
     pdf.add_page()
-    pdf.set_font("Arial", size=16, style='B')
+    pdf.set_font("helvetica", size=16, style='B')
     pdf.cell(0, 10, txt="2. Métricas Clave y Resumen de Resultados", ln=1, align="L")
     pdf.ln(5)
     
     # Título de tabla
-    pdf.set_font("Arial", size=12, style='B')
+    pdf.set_font("helvetica", size=12, style='B')
     pdf.cell(0, 10, txt="Métricas Totales y por Segmento (Periodo Filtrado)", ln=1, align="L")
 
     # Tabla de Métricas (usando df_resumen)
-    pdf.set_font("Arial", size=9)
+    pdf.set_font("helvetica", size=9)
     col_width = pdf.w / 4.75 # Ancho de columna dinámico
     row_height = 6
     
@@ -120,7 +120,7 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
     # --------------------------------------------------------------------------------
     # 3. VISUALIZACIONES DE ANÁLISIS
     # --------------------------------------------------------------------------------
-    pdf.set_font("Arial", size=16, style='B')
+    pdf.set_font("helvetica", size=16, style='B')
     pdf.cell(0, 10, txt="3. Visualizaciones de Análisis", ln=1, align="L")
     pdf.ln(5)
     
@@ -142,4 +142,5 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
 
     # El resultado es el binario (bytes). Lo convertimos a 'bytes' inmutable para Streamlit.
     return bytes(pdf.output(dest='S', encoding='latin-1')) 
+
 
