@@ -54,13 +54,13 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
             pdf.image(name=io.BytesIO(png_bytes), type='PNG', w=width) 
             pdf.ln(5)
         
-    except Exception as e:
-        # Imprime un mensaje de error explícito en el PDF
-        pdf.set_font("helvetica", size=10, style='I')
-        pdf.cell(0, 7, txt=f"[❌ ERROR AL GENERAR GRÁFICO: {title}]", ln=1, align="L")
-        pdf.cell(0, 7, txt=f"Tipo de Error: {type(e).__name__}", ln=1, align="L")
-        pdf.cell(0, 7, txt=f"Detalle: {str(e)[:150]}", ln=1, align="L")
-        pdf.ln(5)
+        except Exception as e:
+            # Imprime un mensaje de error explícito en el PDF
+            pdf.set_font("helvetica", size=10, style='I')
+            pdf.cell(0, 7, txt=f"[❌ ERROR AL GENERAR GRÁFICO: {title}]", ln=1, align="L")
+            pdf.cell(0, 7, txt=f"Tipo de Error: {type(e).__name__}", ln=1, align="L")
+            pdf.cell(0, 7, txt=f"Detalle: {str(e)[:150]}", ln=1, align="L")
+            pdf.ln(5)
 
     # --------------------------------------------------------------------------------
     # 1. PORTADA Y METADATOS
@@ -156,6 +156,7 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
 
     # El resultado es el binario (bytes). Lo convertimos a 'bytes' inmutable para Streamlit.
     return bytes(pdf.output(dest='S')) 
+
 
 
 
