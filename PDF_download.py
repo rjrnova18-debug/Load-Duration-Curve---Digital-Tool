@@ -73,9 +73,6 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
     pdf.cell(0, 5, txt=f"- Tipo de Curva de Energía Reportado: {tipo_curva}", ln=1, align="L")
     pdf.cell(0, 5, txt=f"- Base del Mapa de Calor: {tipo_mapa}", ln=1, align="L")
 
-    # --------------------------------------------------------------------------------
-    # 2. TABLA DE MÉTRICAS CONSOLIDADAS
-    # --------------------------------------------------------------------------------
     pdf.add_page()
     pdf.set_font("Arial", size=16, style='B')
     pdf.cell(0, 10, txt="2. Métricas Clave y Resumen de Resultados", ln=1, align="L")
@@ -145,4 +142,3 @@ def create_pdf_report(df_resumen, version, figures, tipo_curva, tipo_mapa, hora_
 
     # El resultado es el binario (bytes). Lo convertimos a 'bytes' inmutable para Streamlit.
     return bytes(pdf.output(dest='S')) 
-# ---------------------------------------------------------------------------------------------------
