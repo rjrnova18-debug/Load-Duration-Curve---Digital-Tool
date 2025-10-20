@@ -7,4 +7,5 @@ plotly
 fpdf
 openpyxl
 xlsxwriter
+fpdf2
 kaleido
